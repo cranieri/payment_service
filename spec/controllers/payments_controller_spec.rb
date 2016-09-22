@@ -62,13 +62,17 @@ describe PaymentsController do
     end
 
     let(:api_response) do
-      [{
+      {
         "status" => "processing",
         "recipient_id" => "rec-id",
         "id" => "payment-id",
         "currency" => "GBP",
         "amount" => "10.5"
-      }]
+      }
+    end
+
+    let(:full_response) do
+      { body: api_response, status: 200 }
     end
 
     let(:request_params) do
@@ -77,7 +81,7 @@ describe PaymentsController do
 
     before do
       request.env["HTTP_AUTHORIZATION"] = "Bearer token"
-      expect_any_instance_of(PaymentGetter).to receive(:get).and_return(api_response)
+      expect_any_instance_of(PaymentGetter).to receive(:get).and_return(full_response)
     end
 
     it "returns status 201" do

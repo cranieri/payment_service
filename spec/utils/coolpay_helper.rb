@@ -12,20 +12,31 @@ class CoolpayHelper
   end
 
   def get_payment_id
-    payment_maker = PaymentMaker.new(CoolpayApi.new)
-    payment = payment_maker.make("10.6", "GBP", recipient_id, access_token)
+    payment = coolpay_api.payments(payment_create_params, bearer_token)
     payment[:body]["payment"]["id"]
   end
 
   def get_access_token
-    authenticator = Authenticator.new(CoolpayApi.new)
-    access_token = authenticator.authenticate('cosimo', '20F03CC806A81392')
+    access_token = coolpay_api.login({username: 'cosimo', apikey: '20F03CC806A81392'})
     access_token[:body]["token"]
   end
 
   def create_recipient
-    recipient_creator = RecipientCreator.new(CoolpayApi.new)
-    recipient = recipient_creator.create("John Doe", access_token)
+    recipient = coolpay_api.recipients({recipient: {name: "John Doe"}}, bearer_token)
     recipient[:body]["recipient"]["id"]
+  end
+
+private
+
+  def bearer_token
+    { "Authorization" => "Bearer #{access_token}" }
+  end
+
+  def payment_create_params
+    {payment: {amount: "10.6", currency: "GBP", recipient_id: recipient_id}}
+  end
+
+  def coolpay_api
+    @coolpay_api ||= CoolpayApi.new
   end
 end

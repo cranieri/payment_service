@@ -1,16 +1,19 @@
 class RecipientsController < ApplicationController
   def create
-    recipient = coolpay_api.recipients({recipient: {name: recipient_name}}, {"Authorization" => "Bearer #{bearer_token}"})
+    recipient = payment_api.recipients(recipient_params, authorization_header)
     render json: recipient[:body], status: recipient[:status]
   end
 
 private
-
-  def recipient_name
-    params[:recipient][:name]
+  def recipient_params
+    {recipient: {name: recipient_name}}
   end
 
-  def bearer_token
-    request.headers["HTTP_AUTHORIZATION"].split(" ")[1]
+  def authorization_header
+    {"Authorization" => "Bearer #{bearer_token}"}
+  end
+
+  def recipient_name
+    params[:recipient][:name] if params[:recipient]
   end
 end
