@@ -1,8 +1,6 @@
 require 'net/http'
 
 class HttpRequest
-  CHARSET = 'UTF-8'
-  CONTENT_TYPE = 'application/json'
   attr_reader :in_uri, :http_verb, :http_headers
 
   def initialize(uri, http_verb, http_headers)
@@ -26,7 +24,7 @@ class HttpRequest
   private
 
   def headers
-    { 'Accept-Charset' => CHARSET, 'Content-Type' => CONTENT_TYPE }.merge(http_headers)
+    { 'Accept-Charset' => 'UTF-8', 'Content-Type' => 'application/json' }.merge(http_headers)
   end
 
   def http_client
