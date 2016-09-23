@@ -15,7 +15,7 @@ class HttpRequest
     uri = URI.parse(in_uri)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
-    request = class_to_call.new(uri.path, headers)
+    request = http_client.new(uri.path, headers)
     request.body = body.to_json
     response = http.request(request)
     {status: response.code, body: format_response(response.body)}
@@ -29,7 +29,7 @@ class HttpRequest
     { 'Accept-Charset' => CHARSET, 'Content-Type' => CONTENT_TYPE }.merge(http_headers)
   end
 
-  def class_to_call
+  def http_client
     Net::HTTP.const_get(http_verb.capitalize)
   end
 end
