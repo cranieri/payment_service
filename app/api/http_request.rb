@@ -1,16 +1,17 @@
 require 'net/http'
+require 'json'
 
 class HttpRequest
-  attr_reader :in_uri, :http_verb, :http_headers
+  attr_reader :http_verb, :http_headers, :uri
 
   def initialize(uri, http_verb, http_headers)
-    @in_uri = uri
     @http_verb = http_verb
     @http_headers = http_headers
+
+    @uri = URI.parse(uri)
   end
 
   def make_request(body)
-    uri = URI.parse(in_uri)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     request = http_client.new(uri.path, headers)

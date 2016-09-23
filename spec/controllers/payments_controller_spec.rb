@@ -31,15 +31,14 @@ describe PaymentsController do
     before do
       request.env["HTTP_AUTHORIZATION"] = "Bearer token"
       expect_any_instance_of(CoolpayApi).to receive(:payments).and_return(expected_response)
+      post :create, request_payload
     end
 
     it "returns status 201" do
-      post :create, request_payload
       expect(response.status).to eq 201
     end
 
     it "returns the payment that have been made" do
-      post :create, request_payload
       expect(JSON.parse(response.body)).to eq payment_response
     end
   end
@@ -82,15 +81,14 @@ describe PaymentsController do
     before do
       request.env["HTTP_AUTHORIZATION"] = "Bearer token"
       expect_any_instance_of(PaymentGetter).to receive(:get).and_return(full_response)
+      get :show, request_params
     end
 
     it "returns status 201" do
-      get :show, request_params
       expect(response.status).to eq 200
     end
 
     it "returns the payment that have been made" do
-      get :show, request_params
       expect(JSON.parse(response.body)).to eq payment_response
     end
   end

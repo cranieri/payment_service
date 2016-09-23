@@ -22,15 +22,14 @@ describe RecipientsController do
     before do
       request.env["HTTP_AUTHORIZATION"] = "Bearer token"
       expect_any_instance_of(CoolpayApi).to receive(:recipients).and_return(expected_response)
+      post :create, request_payload
     end
 
     it "returns status 201" do
-      post :create, request_payload
       expect(response.status).to eq 201
     end
 
     it "returns the created recipient" do
-      post :create, request_payload
       expect(JSON.parse(response.body)).to eq recipient_response
     end
   end
