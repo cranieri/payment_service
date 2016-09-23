@@ -2,7 +2,10 @@ require 'rails_helper'
 
 describe 'login' do
   it "returns a valid access token for coolpay api" do
-    post '/login', {username: "cosimo", apikey: "20F03CC806A81392"}
+    username = PaymentService::CONFIG["payment_api"]["username"]
+    apikey = PaymentService::CONFIG["payment_api"]["apikey"]
+
+    post '/login', {username: username, apikey: apikey}
     expect(JSON.parse(response.body)).to include("token" => anything)
     expect(response.status).to be 200
   end

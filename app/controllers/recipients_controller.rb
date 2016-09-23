@@ -8,11 +8,7 @@ private
   def recipient_params
     {recipient: {name: recipient_name}}
   end
-
-  def authorization_header
-    {"Authorization" => "Bearer #{bearer_token}"}
-  end
-
+  
   def recipient_name
     params[:recipient][:name] if params[:recipient]
   end

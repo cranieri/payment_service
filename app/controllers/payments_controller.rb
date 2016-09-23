@@ -5,16 +5,12 @@ class PaymentsController < ApplicationController
   end
 
   def show
-    payment_getter = PaymentGetter.new(CoolpayApi.new)
-    payment = payment_getter.get(payment_id, bearer_token)
+    payment_getter = PaymentGetter.new(payment_api, payment_id)
+    payment = payment_getter.get(authorization_header)
     render json: { payment: payment[:body] } , status: payment[:status]
   end
 
 private
-
-  def authorization_header
-    {"Authorization" => "Bearer #{bearer_token}"}
-  end
 
   def payment_create_params
     {payment: {amount: amount, currency: currency, recipient_id: recipient_id}}

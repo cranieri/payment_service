@@ -4,8 +4,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def payment_api
-    CoolpayApi.new
+    CoolpayApi.new(ApiAdaptor.new(PaymentService::CONFIG["payment_api"]["url"]))
   end
+
+  def authorization_header
+    {"Authorization" => "Bearer #{bearer_token}"}
+  end
+
+private
 
   def bearer_token
     request.headers["HTTP_AUTHORIZATION"].split(" ")[1] if request.headers["HTTP_AUTHORIZATION"]

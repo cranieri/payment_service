@@ -23,4 +23,6 @@ module PaymentService
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
   end
+
+  CONFIG = YAML.load_file(Rails.root.join("config", "config.yml"))
 end

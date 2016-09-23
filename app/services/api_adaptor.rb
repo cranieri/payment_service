@@ -1,4 +1,4 @@
-class ApiCaller
+class ApiAdaptor
   attr_reader :request_class
 
   def initialize(api_url, request_class: "JsonRequest")

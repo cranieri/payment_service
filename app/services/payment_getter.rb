@@ -1,28 +1,31 @@
 class PaymentGetter
-  attr_reader :api
+  attr_reader :api, :payment_id
 
-  def initialize(api)
+  def initialize(api, payment_id)
     @api = api
+    @payment_id = payment_id
   end
 
-  def get(payment_id, bearer_token)
-    payments = api.get_payments({ "Authorization" => "Bearer #{bearer_token}" })
-
+  def get(authorization_header)
+    payments = api.get_payments(authorization_header)
     if (payments[:status] == "401")
       { body: payments[:body], status: payments[:status] }
     else
-      get_payment_response(payments, payment_id)
+      get_payment_response(payments)
     end
   end
 
 private
 
-  def get_payment_response(payments, payment_id)
-    if payments[:body]["payments"]
-      matched_payments = payments[:body]["payments"].select { |payment| payment["id"] == payment_id }
-      { body: matched_payments[0], status: payments[:status] }
+  def get_payment_response(payments)
+    if matched_payment = matched_payment(payments)
+      { body: matched_payment, status: payments[:status] }
     else
-      { body: "Payment not found", status: 404 }
+      { body: {message: "Payment not found"}, status: 404 }
     end
+  end
+
+  def matched_payment(payments)
+    payments[:body]["payments"].select { |payment| payment["id"] == payment_id }.first
   end
 end

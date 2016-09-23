@@ -1,0 +1,4 @@
+payment_api:
+  url: https://coolpay.herokuapp.com/api/
+  username: cosimo
+  apikey: 20F03CC806A81392

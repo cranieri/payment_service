@@ -17,7 +17,7 @@ class CoolpayHelper
   end
 
   def get_access_token
-    access_token = coolpay_api.login({username: 'cosimo', apikey: '20F03CC806A81392'})
+    access_token = coolpay_api.login({username: username, apikey: apikey})
     access_token[:body]["token"]
   end
 
@@ -36,7 +36,15 @@ private
     {payment: {amount: "10.6", currency: "GBP", recipient_id: recipient_id}}
   end
 
+  def username
+    PaymentService::CONFIG["payment_api"]["username"]
+  end
+
+  def apikey
+    PaymentService::CONFIG["payment_api"]["apikey"]
+  end
+
   def coolpay_api
-    @coolpay_api ||= CoolpayApi.new
+    @coolpay_api ||= CoolpayApi.new(ApiAdaptor.new(PaymentService::CONFIG["payment_api"]["url"]))
   end
 end
