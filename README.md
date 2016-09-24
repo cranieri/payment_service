@@ -3,7 +3,7 @@ This API has been implemented to allow several operations to be performed throug
 
 The payment service has been built with Rails 5 and tested with Rspec 3.5.3
 
-Below are listed the requests that can be sent to the payment api, with related response:
+Below are listed the requests that can be sent to the payment api, with related responses:
 
 # Login
 
