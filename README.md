@@ -29,7 +29,7 @@ POST http://localhost:3000/login
 ```
 POST http://localhost:3000/recipients
 
-{"name": "cosimo"}
+{"recipient": {"name": "cosimo"}}
 
 ```
 
